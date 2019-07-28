@@ -6,6 +6,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -38,11 +40,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void displayNotification() {
         createNotificationChannel();
+
+
+        Intent intent = new Intent(this, NotificationActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_sms_black_24dp);
         builder.setContentTitle("Notification Example");
         builder.setContentText("This is a notification");
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setAutoCancel(true);
+        builder.setContentIntent(pendingIntent);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
