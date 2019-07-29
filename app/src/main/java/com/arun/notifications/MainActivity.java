@@ -9,6 +9,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -61,9 +63,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_get_app_black_24dp);
-        builder.setContentTitle("Image Download");
-        builder.setContentText("Download in progress");
+        builder.setContentTitle("Expandable Notification");
+        builder.setContentText("Notification Expandable");
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+       /* Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nature);
+        builder.setLargeIcon(bitmap);
+        builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).bigLargeIcon(null));*/
+
+       builder.setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.dummy_text)));
+
+
         //builder.setAutoCancel(true);
         //builder.setContentIntent(pendingIntent);
 //        builder.addAction(R.drawable.ic_done_black_24dp, "YES", yesPendingIntent);
@@ -86,16 +96,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 */
 
-       final int maxProgress = 100;
+      /* final int maxProgress = 100;
        int currentProgress = 0;
 
-       builder.setProgress(maxProgress, currentProgress, false);
+       builder.setProgress(maxProgress, currentProgress, false);*/
 
         final NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(NOTIFICATION_ID, builder.build());
 
 
-        Thread thread = new Thread() {
+     /*   Thread thread = new Thread() {
             @Override
             public void run() {
                 int count = 0;
@@ -118,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        thread.start();
+        thread.start();*/
 
     }
 
