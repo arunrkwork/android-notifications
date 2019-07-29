@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RemoteViews;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,17 +62,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PendingIntent noPendingIntent = PendingIntent.getActivity(this, 0, noIntent, PendingIntent.FLAG_ONE_SHOT);*/
 
 
+        RemoteViews normalView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.remote_layout);
+        RemoteViews expandableView = new RemoteViews(getApplicationContext().getPackageName(), R.layout.remote_expand_layout);
+
+
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_get_app_black_24dp);
-        builder.setContentTitle("Expandable Notification");
-        builder.setContentText("Notification Expandable");
+//        builder.setContentTitle("Expandable Notification");
+//        builder.setContentText("Notification Expandable");
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+        builder.setCustomContentView(normalView);
+        builder.setCustomBigContentView(expandableView);
 
        /* Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.nature);
         builder.setLargeIcon(bitmap);
         builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).bigLargeIcon(null));*/
 
-       builder.setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.dummy_text)));
+     //  builder.setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.dummy_text)));
 
 
         //builder.setAutoCancel(true);
