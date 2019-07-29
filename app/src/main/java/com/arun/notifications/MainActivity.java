@@ -3,6 +3,7 @@ package com.arun.notifications;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.RemoteInput;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnNotification;
     public static final String CHANNEL_ID = "personal_notifications";
     public static final int NOTIFICATION_ID = 001;
+    public static final String TXT_REPLY = "text_reply";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +66,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         builder.setAutoCancel(true);
         builder.setContentIntent(pendingIntent);
-        builder.addAction(R.drawable.ic_done_black_24dp, "YES", yesPendingIntent);
-        builder.addAction(R.drawable.ic_clear_black_24dp, "NO", noPendingIntent);
+//        builder.addAction(R.drawable.ic_done_black_24dp, "YES", yesPendingIntent);
+//        builder.addAction(R.drawable.ic_clear_black_24dp, "NO", noPendingIntent);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            RemoteInput remoteInput = new RemoteInput.Builder(TXT_REPLY)
+                    .setLabel("Reply")
+                    .build();
 
+            Intent replyIntent = new Intent(this, AutoReplyActivity.class);
+            replyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent replyPendingIntent = PendingIntent.getActivity(this, 0, replyIntent, PendingIntent.FLAG_ONE_SHOT);
+
+            NotificationCompat.Action action = new NotificationCompat.Action
+                    .Builder(R.drawable.ic_sms_black_24dp, "Reply"
+                    , replyPendingIntent).addRemoteInput(remoteInput).build();
+
+            builder.addAction(action);
+        }
 
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
